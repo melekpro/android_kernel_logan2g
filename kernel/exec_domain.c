@@ -68,16 +68,18 @@ lookup_exec_domain(unsigned int personality)
 				goto out;
 	}
 
-#ifdef CONFIG_MODULES
-	read_unlock(&exec_domains_lock);
-	request_module("personality-%d", pers);
-	read_lock(&exec_domains_lock);
 
-	for (ep = exec_domains; ep; ep = ep->next) {
-		if (pers >= ep->pers_low && pers <= ep->pers_high)
-			if (try_module_get(ep->module))
 				goto out;
 	}
+/*
+ * Disable the request_module here to avoid trying to
+ * load the personality-8 module, which  doesn't exist,
+ * and results in selinux audit noise.
+ * Disabling this here avoids folks adding module_request
+ * to their sepolicy, which is maybe too generous
+ */
+#if 0
+
 #endif
 
 	ep = &default_exec_domain;
