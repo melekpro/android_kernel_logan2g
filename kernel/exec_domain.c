@@ -68,9 +68,6 @@ lookup_exec_domain(unsigned int personality)
 				goto out;
 	}
 
-
-				goto out;
-	}
 /*
  * Disable the request_module here to avoid trying to
  * load the personality-8 module, which  doesn't exist,
@@ -79,11 +76,6 @@ lookup_exec_domain(unsigned int personality)
  * to their sepolicy, which is maybe too generous
  */
 #if 0
-
-#endif
-
-	ep = &default_exec_domain;
-out:
 	read_unlock(&exec_domains_lock);
 	return (ep);
 }
